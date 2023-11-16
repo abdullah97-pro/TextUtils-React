@@ -28,12 +28,13 @@ const handleClearClick = () => {
 }
 
 const handleCopy = () => {
-  console.log("copy");
-  var text = document.getElementById('myTextBox');
-  text.select();
+  // console.log("copy");
+  // var text = document.getElementById('myTextBox');
+  // text.select();
   // text.setSelectionRange(0,9999);
-  navigator.clipboard.writeText(text.value);
-  props.showAlert("Data has been copied","successfully");
+  navigator.clipboard.writeText(text);
+  // document.getSelection().removeAllRanges();
+  props.showAlert("Copied to Clipboard","successfully");
 }
 
 const handleSelectAll = () => {
@@ -57,25 +58,25 @@ const [text, setText] = useState("");
       <h3 className='mt-3 pb-2'>{ props.heading }</h3>
 
       <div className="mb-3">
-          <textarea className="form-control" id="myTextBox" rows="3" value={ text } placeholder={msg} onChange={handleOnChange} style={{ backgroundColor : props.mode === 'dark' ? 'rgb(71, 128, 93)' : 'white', color: props.mode === 'dark' ? 'white' : 'black' }}></textarea>
+          <textarea className="form-control" id="myTextBox" rows="3" value={ text } placeholder={msg} onChange={handleOnChange} style={{ backgroundColor : props.mode === 'dark' ? 'rgb(33, 77, 70)' : 'white', color: props.mode === 'dark' ? 'white' : 'black' }}></textarea>
       </div>
 
       <div className="mb-3">
-          <button className='btn btn-primary' onClick={handleUpClick}>Convert Uppercase</button>
-          <button className='btn btn-primary ms-3' onClick={handleLoClick}>Convert Lowercase</button>
-          <button className="btn btn-primary ms-3" onClick={handleClearClick}>Clear</button>
-          <button className="btn btn-primary ms-3" onClick={handleCopy}>Copy</button>
-          <button className="btn btn-primary ms-3" onClick={handleSelectAll}>Select All</button>
-          <button className="btn btn-primary ms-3" onClick={handleExtraSpaces}>Remove Extra Spaces</button>
+          <button disabled={text.length===0} className='btn btn-primary my-1' onClick={handleUpClick}>Convert Uppercase</button>
+          <button disabled={text.length===0} className='btn btn-primary mx-1 my-1' onClick={handleLoClick}>Convert Lowercase</button>
+          <button disabled={text.length===0} className="btn btn-primary mx-1 my-1" onClick={handleClearClick}>Clear</button>
+          <button disabled={text.length===0} className="btn btn-primary mx-1 my-1" onClick={handleCopy}>Copy</button>
+          <button disabled={text.length===0} className="btn btn-primary mx-1 my-1" onClick={handleSelectAll}>Select All</button>
+          <button disabled={text.length===0} className="btn btn-primary mx-1 my-1" onClick={handleExtraSpaces}>Remove Extra Spaces</button>
       </div>
 
     </div>
     <div className="container" style={{ color: props.mode === 'dark' ? 'white' : 'black' }}>
       <h1>Summary of text</h1>
-      <p>{text.split(" ").length} words and {text.length} characters</p>
-      <p>Reading Time: {0.008 * (text.split(" ").length)} min </p>
+      <p>{text.split(/\s+/).filter((element)=>{return element.length!==0}).length} words and {text.length} characters</p>
+      <p>Reading Time: {0.008 * (text.split(" ").filter((element)=>{return element.length!==0}).length)} min </p>
       <h1>Preview: </h1>
-      <p> {text.length > 0 ? text:'Enter any text to preview'} </p>
+      <p> {text.length > 0 ? text:'Nothing to Preview'} </p>
     </div>
     </>
   )
